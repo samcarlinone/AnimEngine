@@ -28,7 +28,7 @@ public class Driver extends Canvas implements Runnable
             test[i] = new Square(0,0);
             int[] vals = {rand(), rand(), rand()/10, rand()/10};
             int[] vals2 = {rand(), rand(), rand()/10, rand()/10};
-            String begin = manager.pack('(', vals)+"={5}="+manager.pack('(', vals2);
+            String begin = AnimParser.pack('(', vals)+"={5}="+AnimParser.pack('(', vals2);
             AnimManager.get().animate(test[i], 4, begin+"={3}=[100,100,10,10]={3}");
         }
     }

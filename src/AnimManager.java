@@ -33,8 +33,8 @@ public class AnimManager {
     }
 
     public void render(Graphics g) {
-        for(AnimSequence anim : sequences) {
-            anim.target.render(g);
+        for(int i=0; i<sequences.size(); i++) {
+            sequences.get(i).target.render(g);
         }
     }
 

@@ -47,7 +47,7 @@ public class AnimSequence {
 
                             Segment next = segments.get(i+1);
 
-                            if(next.getType() != SegmentType.LERP_SEGMENT && next.getType() == SegmentType.JUMP_SEGMENT)
+                            if(next.getType() != SegmentType.LERP_SEGMENT && next.getType() != SegmentType.JUMP_SEGMENT)
                                 return false;
 
                             double p = 1-(current_time-time)/segments.get(i).getVal(0);
@@ -62,7 +62,7 @@ public class AnimSequence {
 
                         case JUMP_SEGMENT:
                             for(int j=0; j<prev.numVals(); j++) {
-                                vals[j] = prev.getVal(i);
+                                vals[j] = prev.getVal(j);
                             }
 
                             target.setVals(vals);

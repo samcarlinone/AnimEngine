@@ -10,6 +10,7 @@ public class AnimParser {
 
     public static String pack(char start, int[] vals) {
         String array = Arrays.toString(vals);
+        array = array.replace(" ","");
 
         switch(start) {
             case '(':
@@ -24,6 +25,9 @@ public class AnimParser {
     }
 
     public static ArrayList<Segment> getAnimation(int numVals, String data) {
+        if(numVals <= 0)
+            return null;
+
         if(!segment_cache.containsKey(data)) {
             segment_cache.put(data, parseStringAnimation(numVals, data));
         }
@@ -32,6 +36,7 @@ public class AnimParser {
     }
 
     private static ArrayList<Segment> parseStringAnimation(int numVals, String data) {
+        data = data.replace(" ", "");
         ArrayList<Segment> result = new ArrayList<>();
 
         for(int i=0; i<data.length();) {
@@ -63,6 +68,17 @@ public class AnimParser {
             }
         }
 
+        for(int i=0; i<result.size()-1; i++) {
+            if(result.get(i).getType() == SegmentType.WAIT_SEGMENT && result.get(i+1).getType() == SegmentType.WAIT_SEGMENT) {
+                Segment new_wait = new Segment(SegmentType.WAIT_SEGMENT, 1);
+                new_wait.setVals(new int[] {result.get(i).getVal(0)+result.get(i+1).getVal(0)});
+                result.add(i, new_wait);
+                result.remove(i+1);
+                result.remove(i+1);
+                i--;
+            }
+        }
+
         return result;
     }
 
@@ -75,7 +91,7 @@ public class AnimParser {
         for(int i=index; i<data.length(); i++) {
             String cur = data.substring(i, i+1);
 
-            if(!cur.matches("\\d")) {
+            if(!cur.matches("[\\d-]")) {
                 vals[numCommas] = Integer.parseInt(data.substring(lastIndex, i));
 
                 if(numCommas == num-1) {
